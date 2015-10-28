@@ -80,16 +80,17 @@ uploadArchives {
     mavenDeployer {
       configuration = configurations.archives
 
-      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: sonatypeUsername, password: sonatypePassword)
-      }
+      logger.info("repoUrl: '{}' | username: '{}' | password: '{}'", repoUrl, mavenUser, mavenPassword)
 
-      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: sonatypeUsername, password: sonatypePassword)
+      repository(url: "${repoUrl}/content/repositories/releases") {
+        authentication(userName: "${mavenUser}", password: "${mavenPassword}")
+      }
+      snapshotRepository(url: "${repoUrl}/content/repositories/snapshots") {
+        authentication(userName: "${mavenUser}", password: "${mavenPassword}")
       }
 
       if (isReleaseVersion) {
-        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+        //beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
       }
     }
   }
