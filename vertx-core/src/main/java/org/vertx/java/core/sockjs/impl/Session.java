@@ -26,6 +26,7 @@ import org.vertx.java.core.logging.impl.LoggerFactory;
 import org.vertx.java.core.shareddata.Shareable;
 import org.vertx.java.core.sockjs.SockJSSocket;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
 import java.util.Map;
@@ -336,7 +337,12 @@ class Session extends SockJSSocketBase implements Shareable {
             try {
               dataHandler.handle(new Buffer(msg));
             } catch (Throwable t) {
-              log.error("Unhandle exception", t);
+              //This is ugly but i don't think there is a more elegant way
+              if(t.getMessage() != null && t.getMessage().contains("Connection reset by peer")){
+                log.debug("Connection reset by peer");
+              }else{
+                log.error("Unhandle exception", t);
+              }
             }
           } else {
             pendingReads.add(msg);
@@ -351,7 +357,12 @@ class Session extends SockJSSocketBase implements Shareable {
     if (exceptionHandler != null) {
       exceptionHandler.handle(t);
     } else {
-      log.error("Unhandled exception", t);
+      //This is ugly but i don't think there is a more elegandt way
+      if(t.getMessage() != null && t.getMessage().contains("Connection reset by peer")){
+        log.debug("Connection reset by peer");
+      } else {
+        log.error("Unhandled exception", t);
+      }
     }
   }
 
