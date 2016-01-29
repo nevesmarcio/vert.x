@@ -185,7 +185,7 @@ public class EventBusBridge implements Handler<SockJSSocket> {
 
   private boolean checkMaxHandlers(SockInfo info) {
     if (info.handlerCount == maxHandlersPerSocket) {
-      log.error("Refusing to register as max_handlers_per_socket reached already");
+      log.debug("Refusing to register as max_handlers_per_socket reached already");
       return false;
     } else {
       return true;
@@ -199,6 +199,7 @@ public class EventBusBridge implements Handler<SockJSSocket> {
     }
     final SockInfo info = sockInfos.get(sock);
     if (!checkMaxHandlers(info)) {
+      handleMaxHandlersReached(sock, address);
       return;
     }
     if (handlePreRegister(sock, address)) {
@@ -684,6 +685,17 @@ public class EventBusBridge implements Handler<SockJSSocket> {
       return hook.handlePreRegister(sock, address);
 	  }
     return true;
+  }
+
+  /**
+   * Client got refused to register
+   * @param sock The socket
+   * @param address The address
+   */
+  protected void handleMaxHandlersReached(SockJSSocket sock, String address) {
+    if (hook != null) {
+      hook.handleMaxHandlersReached(sock, address);
+    }
   }
 
   /**
