@@ -337,12 +337,7 @@ class Session extends SockJSSocketBase implements Shareable {
             try {
               dataHandler.handle(new Buffer(msg));
             } catch (Throwable t) {
-              //This is ugly but i don't think there is a more elegant way
-              if(t.getMessage() != null && t.getMessage().contains("Connection reset by peer")){
-                log.debug("Connection reset by peer");
-              }else{
-                log.error("Unhandle exception", t);
-              }
+              log.error("Unhandled exception", t);
             }
           } else {
             pendingReads.add(msg);
@@ -357,12 +352,7 @@ class Session extends SockJSSocketBase implements Shareable {
     if (exceptionHandler != null) {
       exceptionHandler.handle(t);
     } else {
-      //This is ugly but i don't think there is a more elegandt way
-      if(t.getMessage() != null && t.getMessage().contains("Connection reset by peer")){
-        log.debug("Connection reset by peer");
-      } else {
-        log.error("Unhandled exception", t);
-      }
+      log.error("Unhandled exception", t);
     }
   }
 
