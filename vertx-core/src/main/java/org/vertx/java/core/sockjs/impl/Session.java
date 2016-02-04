@@ -337,7 +337,7 @@ class Session extends SockJSSocketBase implements Shareable {
             try {
               dataHandler.handle(new Buffer(msg));
             } catch (Throwable t) {
-              log.error("Unhandled exception", t);
+              log.error("Unhandle exception", t);
             }
           } else {
             pendingReads.add(msg);
