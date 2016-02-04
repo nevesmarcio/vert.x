@@ -26,7 +26,6 @@ import org.vertx.java.core.logging.impl.LoggerFactory;
 import org.vertx.java.core.shareddata.Shareable;
 import org.vertx.java.core.sockjs.SockJSSocket;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
 import java.util.Map;
