@@ -81,4 +81,11 @@ public interface EventBusBridgeHook {
    */
   boolean handleAuthorise(JsonObject message, String sessionID,
                           Handler<AsyncResult<Boolean>> handler);
+
+  /**
+   * Called after a register was denied
+   * @param sock The socket
+   * @param address The address
+     */
+  void handleMaxHandlersReached(SockJSSocket sock, String address);
 }
